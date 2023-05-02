@@ -32,7 +32,7 @@ def prepare_data(data_path, patch_size, stride, aug_times=1):
     print('process training data')
     scales = [1, 0.9, 0.8, 0.7]
     #files = glob.glob(os.path.join(data_path, 'grayimages', '*'))
-    files = glob.glob(os.path.join(data_path, 'pristine_images_gray', '*'))
+    files = glob.glob(os.path.join(data_path, 'pristine_images_gray/pristine_images_gray', '*'))
     files.sort()
     h5f = h5py.File('train.h5', 'w')
     train_num = 0
@@ -44,7 +44,8 @@ def prepare_data(data_path, patch_size, stride, aug_times=1):
             Img = np.expand_dims(Img[:,:,0].copy(), 0)
             Img = np.float32(normalize(Img))
             patches = Im2Patch(Img, win=patch_size, stride=stride)
-            print("file: %s scale %.1f # samples: %d" % (files[i], scales[k], patches.shape[3]*aug_times))
+            if k % 10 == 0:
+                print("file: %s scale %.1f # samples: %d" % (files[i], scales[k], patches.shape[3]*aug_times))
             for n in range(patches.shape[3]):
                 data = patches[:,:,:,n].copy()
                 h5f.create_dataset(str(train_num), data=data)

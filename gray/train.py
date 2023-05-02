@@ -10,7 +10,8 @@ from torch.autograd import Variable
 from torch.utils.data import DataLoader
 
 from torch.nn.modules.loss import _Loss 
-from models import DnCNN
+# from models import DnCNN
+from models import ADNet
 from dataset import prepare_data, Dataset
 from utils import *
 
@@ -47,7 +48,8 @@ class sum_squared_error(_Loss):  # PyTorch 0.4.1
 
 def main():
     # Load dataset
-    t1 = time.clock()
+    # t1 = time.clock()
+    t1 = time.perf_counter()
     save_dir = opt.outf + 'sigma' + str(opt.noiseL) + '_' + time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime()) + '/'
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
@@ -133,7 +135,7 @@ def main():
     f.close()
     t2 = time.clock()
     t = t2-t1
-    print t 
+    print(t) 
 
 if __name__ == "__main__":
     if opt.preprocess:
