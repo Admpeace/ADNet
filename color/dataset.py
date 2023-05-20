@@ -48,7 +48,8 @@ def prepare_data(data_path, patch_size, stride, aug_times=1):
             Img = Img.numpy()
             Img = np.float32(normalize(Img))
             patches = Im2Patch(Img, win=patch_size, stride=stride)
-            print("file: %s scale %.1f # samples: %d" % (files[i], scales[k], patches.shape[3]*aug_times))
+            if k % 10 == 0:
+                print("file: %s scale %.1f # samples: %d" % (files[i], scales[k], patches.shape[3]*aug_times))
             for n in range(patches.shape[3]):
                 data = patches[:,:,:,n].copy()
                 h5f.create_dataset(str(train_num), data=data)
